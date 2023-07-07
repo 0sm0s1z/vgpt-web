@@ -5,6 +5,9 @@ import { CpeBox } from "~/components/CpeBox";
 import { LongDescription } from "~/components/LongDescription";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { ThreatBar } from "~/components/ThreatBar";
+import { ThreatReport } from "~/components/ThreatReport";
+import { Remediation } from "~/components/Remediation";
+import { References } from "~/components/References";
 
 export interface Cve {
   CVEDataFormat: string;
@@ -109,7 +112,7 @@ export default function Report() {
                 <h3 className="pb-4 font-orbitron text-2xl font-bold">
                   {cve.CVEDataMeta.ID} - {cve.Analysis.short_title}
                 </h3>
-                <div className="mb-4 flex w-full flex-row gap-6 rounded-md border border-violet-200/60 p-4 shadow-lg">
+                <div className="mb-4 flex w-full flex-row gap-6 rounded-md border border-violet-200/60 bg-white/10 p-4 shadow-lg">
                   <div className="mr-10">
                     <SeverityGage />
                   </div>
@@ -132,91 +135,11 @@ export default function Report() {
                 </div>
                 <LongDescription cve={cve} />
                 <ThreatBar cve={cve} />
+                <ThreatReport cve={cve} />
+                <Remediation cve={cve} />
+                <References cve={cve} />
 
                 <hr className="mt-10"></hr>
-
-                <div className="flex flex-row justify-between">
-                  <div className="flex flex-col">
-                    <p className="text-sm">
-                      CVSSv3 Base Score: {cve.CVSSV3.baseScore}
-                    </p>
-                    <p className="text-sm">
-                      CVSSv3 Base Severity: {cve.CVSSV3.baseSeverity}
-                    </p>
-                    <p className="text-sm">CIA Impact:</p>
-                  </div>
-                  <div className="flex flex-col">
-                    <p className="text-sm">
-                      CVSSv3 Vector String: {cve.CVSSV3.vectorString}
-                    </p>
-                    <p className="text-sm">
-                      CVSSv3 Attack Vector: {cve.CVSSV3.attackVector}
-                    </p>
-                    <p className="text-sm">CPE: {cve.cpe23Uri}</p>
-                  </div>
-                  <div className="flex flex-col">
-                    <p className="text-sm">
-                      CVSSv3 Attack Complexity: {cve.CVSSV3.attackComplexity}
-                    </p>
-                    <p className="text-sm">
-                      CVSSv3 Privileges Required:{" "}
-                      {cve.CVSSV3.privilegesRequired}
-                    </p>
-                    <p className="text-sm">
-                      CVSSv3 User Interaction: {cve.CVSSV3.userInteraction}
-                    </p>
-                  </div>
-                  <div className="flex flex-col">
-                    <p className="text-sm">Vendor:</p>
-                    <p className="text-sm">Product:</p>
-                    <p className="text-sm">Version:</p>
-                  </div>
-                </div>
-
-                <h4 className="mb-2 text-xl font-bold">
-                  CVE ID: {cve.CVEDataMeta.ID}
-                </h4>
-                <p>
-                  <strong>Description:</strong>{" "}
-                  {cve.Description.description_data[0]?.value}
-                </p>
-                <p>
-                  <strong>CVSSv3 Base Score:</strong> {cve.CVSSV3.baseScore}
-                </p>
-                <p>
-                  <strong>CVSSv3 Base Severity:</strong>{" "}
-                  {cve.CVSSV3.baseSeverity}
-                </p>
-                <p>
-                  <strong>Analysis:</strong>
-                </p>
-                <ul>
-                  <li>
-                    <strong>Short Title:</strong> {cve.Analysis.short_title}
-                  </li>
-                  <li>
-                    <strong>Long Description:</strong>{" "}
-                    {cve.Analysis.long_description}
-                  </li>
-                  <li>
-                    <strong>Threat Analysis:</strong>{" "}
-                    {cve.Analysis.threat_analysis}
-                  </li>
-                  <li>
-                    <strong>Remediation Plan:</strong>{" "}
-                    {cve.Analysis.remediation_plan}
-                  </li>
-                </ul>
-                <p>
-                  <strong>References:</strong>
-                </p>
-                <ul>
-                  {cve.References.map((ref, i) => (
-                    <li key={i}>
-                      <a href={ref}>{ref}</a>
-                    </li>
-                  ))}
-                </ul>
               </div>
             ))}
           </div>

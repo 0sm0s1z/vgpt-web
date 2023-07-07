@@ -7,7 +7,7 @@ interface ThreatBarProps {
 export const ThreatBar = ({ cve }: ThreatBarProps) => {
   const summary = threatSummary(cve);
   return (
-    <div className="mt-6 flex w-full flex-row gap-6 rounded-md border border-violet-200/60 bg-gradient-to-b from-[#291d64] to-[#141332] p-8 shadow-lg">
+    <div className="mt-4 flex w-full flex-row gap-6 rounded-md border border-violet-200/60 bg-white/10 p-8 shadow-lg">
       <div className="flex flex-row">
         <div className="flex flex-col">
           <div className="w-20 pb-1 font-orbitron text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
@@ -21,28 +21,32 @@ export const ThreatBar = ({ cve }: ThreatBarProps) => {
       <div className="flex w-full flex-col">
         <div className="flex w-full flex-row items-center justify-between px-2 font-roboto">
           <div className="flex flex-col">
-            <div className=" pb-1 font-orbitron text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
+            <div className="pb-1 font-orbitron text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
               Attack Vector
             </div>
-            <div className="font-roboto">{cve.CVSSV3?.attackVector}</div>
+            <div className="font-roboto text-violet-100">
+              {cve.CVSSV3?.attackVector}
+            </div>
           </div>
           <div className="flex flex-col">
-            <div className=" pb-1 font-orbitron text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
+            <div className="pb-1 font-orbitron text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
               Attack Complexity
             </div>
-            <div className="font-roboto">{cve.CVSSV3?.attackComplexity}</div>
+            <div className="font-roboto text-violet-100">
+              {cve.CVSSV3?.attackComplexity}
+            </div>
           </div>
           <div className="flex flex-col">
-            <div className=" pb-1 font-orbitron text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
+            <div className="pb-1 font-orbitron text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
               PrivilegesRequired
             </div>
-            <div className="font-roboto">{cve.CVSSV3?.privilegesRequired}</div>
+            <div className="font-roboto text-violet-100">{cve.CVSSV3?.privilegesRequired}</div>
           </div>
           <div className="flex flex-col">
-            <div className=" pb-1 font-orbitron text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
+            <div className="pb-1 font-orbitron text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
               User Interaction
             </div>
-            <div className="font-roboto">{cve.CVSSV3?.userInteraction}</div>
+            <div className="font-roboto text-violet-100">{cve.CVSSV3?.userInteraction}</div>
           </div>
         </div>
         <div className="mt-4 font-orbitron text-2xs font-bold uppercase tracking-wider text-violet-100">
@@ -52,9 +56,9 @@ export const ThreatBar = ({ cve }: ThreatBarProps) => {
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
+                stroke-width="1"
                 stroke="currentColor"
-                className="mr-4 w-10 text-violet-400 shadow-md"
+                className="mr-4 w-10 text-violet-100 shadow-md"
               >
                 <path
                   stroke-linecap="round"
