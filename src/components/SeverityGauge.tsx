@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
+import { MayHaveLabel, PieTooltipProps } from "@nivo/pie";
 
 const ResponsivePie = dynamic(
   () => import("@nivo/pie").then((m) => m.ResponsivePie),
@@ -99,7 +100,7 @@ export const SeverityGage = () => {
   ];
 
   // Mouseover tooltip
-  const Tooltip: React.FC<TooltipProps> = ({ datum }) => (
+  const Tooltip: React.FC<PieTooltipProps<MayHaveLabel>> = ({ datum }) => (
     <div className="rounded-sm bg-violet-500/80 p-2">
       <strong>This vulnerability is {datum.label} </strong>
     </div>
