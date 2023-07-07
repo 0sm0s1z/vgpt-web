@@ -22,19 +22,19 @@ export const CpeBox = ({ cve }: CpeBoxProps) => {
   }
 
   // Loop through the cpe.children array
-  for (let child of cpe.children) {
+  for (const child of cpe.children) {
     // Check if cpe_match array exists in the child object
     if (child.cpe_match) {
       // Loop through the cpe_match array
-      for (let match of child.cpe_match) {
+      for (const match of child.cpe_match) {
         // Check if the match object is vulnerable
         if (match.vulnerable) {
           // Parse the cpe23Uri string to extract vendor, product and version
           cpeUri = match.cpe23Uri;
           const parts = match.cpe23Uri.split(":");
-          Vendor = truncateString(capitalizeFirstLetter(parts[3]), 16); // ? Should process this to add icons for common vendors (e.g. Microsoft, Apple, etc.) in the future
-          Product = truncateString(parts[4], 16); // ? Should process this to add icons for common products (e.g. internet explorer, etc.) in the future
-          Version = truncateString(parts[5], 16);
+          Vendor = truncateString(capitalizeFirstLetter(parts[3] ?? ""), 16); // ? Should process this to add icons for common vendors (e.g. Microsoft, Apple, etc.) in the future
+          Product = truncateString(parts[4] ?? "", 16); // ? Should process this to add icons for common products (e.g. internet explorer, etc.) in the future
+          Version = truncateString(parts[5] ?? "", 16);
           break;
         }
       }
