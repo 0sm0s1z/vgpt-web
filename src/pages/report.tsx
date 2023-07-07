@@ -1,83 +1,85 @@
-import Link from "next/link";
-import { api } from "~/utils/api";
-
 import { data } from "~/cve";
+import { SeverityGage } from "~/components/SeverityGauge";
+import { CvssBox } from "~/components/CvssBox";
+import { CpeBox } from "~/components/CpeBox";
+import { LongDescription } from "~/components/LongDescription";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import { ThreatBar } from "~/components/ThreatBar";
 
 export interface Cve {
-    CVEDataFormat:       string;
-    CVEDataType:         string;
-    CVEDataVersion:      string;
-    CVEDataNumberOfCVEs: string;
-    CVEDataTimestamp:    string;
-    CVEItems:            null;
-    CVEDataMeta:         CVEDataMeta;
-    Description:         Description;
-    Analysis:            Analysis;
-    CPE:                 Cpe;
-    CVSSV3:              Cvssv3;
-    References:          string[];
-    Tags:                null;
+  CVEDataFormat: string;
+  CVEDataType: string;
+  CVEDataVersion: string;
+  CVEDataNumberOfCVEs: string;
+  CVEDataTimestamp: string;
+  CVEItems: null;
+  CVEDataMeta: CVEDataMeta;
+  Description: Description;
+  Analysis: Analysis;
+  CPE: Cpe;
+  CVSSV3: Cvssv3;
+  References: string[];
+  Tags: null;
 }
 
 export interface Analysis {
-    short_title:       string;
-    long_description:  string;
-    short_description: string;
-    threat_analysis:   string;
-    remediation_plan:  string;
-    tags:              string[];
+  short_title: string;
+  long_description: string;
+  short_description: string;
+  threat_analysis: string;
+  remediation_plan: string;
+  tags: string[];
 }
 
 export interface Cpe {
-    operator: string;
-    children: Child[];
+  operator: string;
+  children: Child[];
 }
 
 export interface Child {
-    operator:  string;
-    cpe_match: CpeMatch[];
+  operator: string;
+  cpe_match: CpeMatch[];
 }
 
 export interface CpeMatch {
-    vulnerable: boolean;
-    cpe23Uri:   string;
+  vulnerable: boolean;
+  cpe23Uri: string;
 }
 
 export interface CVEDataMeta {
-    ID:       string;
-    ASSIGNER: string;
+  ID: string;
+  ASSIGNER: string;
 }
 
 export interface Cvssv3 {
-    version:               string;
-    vectorString:          string;
-    attackVector:          string;
-    attackComplexity:      string;
-    privilegesRequired:    string;
-    userInteraction:       string;
-    scope:                 string;
-    confidentialityImpact: string;
-    integrityImpact:       string;
-    availabilityImpact:    string;
-    baseScore:             number;
-    baseSeverity:          string;
+  version: string;
+  vectorString: string;
+  attackVector: string;
+  attackComplexity: string;
+  privilegesRequired: string;
+  userInteraction: string;
+  scope: string;
+  confidentialityImpact: string;
+  integrityImpact: string;
+  availabilityImpact: string;
+  baseScore: number;
+  baseSeverity: string;
 }
 
 export interface Description {
-    description_data: DescriptionDatum[];
+  description_data: DescriptionDatum[];
 }
 
 export interface DescriptionDatum {
-    lang:  string;
-    value: string;
+  lang: string;
+  value: string;
 }
-
 
 export default function Report() {
   const loading = false;
 
   return (
-    <div className="container flex flex-col p-8">
+    <div className="circuit-board container flex flex-col p-8">
       {loading ? (
         <div className="flex min-h-screen items-center justify-center">
           <h1>
@@ -88,22 +90,50 @@ export default function Report() {
         <div className="flex h-full flex-col gap-2 rounded-xl bg-white/10 p-4 text-white">
           <div className="flex-grow overflow-auto">
             {data.map((cve, index) => (
-              <div key={index} className="mb-4 rounded-md p-4 shadow-lg">
-                <h3 className="text-2xl font-bold">
-                  {cve.CVEDataMeta.ID} - {cve.Analysis.short_title}
-                  <hr className="my-2 mb-10" />
-                </h3>
-                <div className="flex flex-row justify-between">
-                    <div className="flex flex-col">
-                        Severity Chart
-                    </div>
-                    <div className="flex flex-col">
-                        asdf
-                    </div>
+              <div key={index} className="mb-4 mt-4 w-full rounded-md p-4">
+                <div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="absolute top-9 h-10 text-violet-100 hover:text-violet-400"
+                  >
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                  </svg>
                 </div>
+                <h3 className="pb-4 font-orbitron text-2xl font-bold">
+                  {cve.CVEDataMeta.ID} - {cve.Analysis.short_title}
+                </h3>
+                <div className="mb-4 flex w-full flex-row gap-6 rounded-md border border-violet-200/60 p-4 shadow-lg">
+                  <div className="mr-10">
+                    <SeverityGage />
+                  </div>
+                  <CvssBox score={cve.CVSSV3.baseScore} />
+                  <CpeBox cve={cve} />
+                </div>
+                <div className="mb-2 flex flex-row justify-between gap-6">
+                  <div className="flex flex-col">
+                    <div className="pb-1 font-orbitron text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
+                      Short Description
+                    </div>
+                    <div className="font-roboto">
+                      <div className="space-y-2 font-roboto">
+                        <ReactMarkdown>
+                          {cve.Analysis.short_description}
+                        </ReactMarkdown>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <LongDescription cve={cve} />
+                <ThreatBar cve={cve} />
 
-
-
+                <hr className="mt-10"></hr>
 
                 <div className="flex flex-row justify-between">
                   <div className="flex flex-col">
@@ -113,9 +143,7 @@ export default function Report() {
                     <p className="text-sm">
                       CVSSv3 Base Severity: {cve.CVSSV3.baseSeverity}
                     </p>
-                    <p className="text-sm">
-                      CIA Impact: 
-                    </p>
+                    <p className="text-sm">CIA Impact:</p>
                   </div>
                   <div className="flex flex-col">
                     <p className="text-sm">
@@ -139,15 +167,9 @@ export default function Report() {
                     </p>
                   </div>
                   <div className="flex flex-col">
-                    <p className="text-sm">
-                      Vendor: 
-                    </p>
-                    <p className="text-sm">
-                      Product: 
-                    </p>
-                    <p className="text-sm">
-                      Version:
-                    </p>
+                    <p className="text-sm">Vendor:</p>
+                    <p className="text-sm">Product:</p>
+                    <p className="text-sm">Version:</p>
                   </div>
                 </div>
 
