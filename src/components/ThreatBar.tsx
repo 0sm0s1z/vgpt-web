@@ -40,13 +40,17 @@ export const ThreatBar = ({ cve }: ThreatBarProps) => {
             <div className="pb-1 font-orbitron text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
               PrivilegesRequired
             </div>
-            <div className="font-roboto text-violet-100">{cve.CVSSV3?.privilegesRequired}</div>
+            <div className="font-roboto text-violet-100">
+              {cve.CVSSV3?.privilegesRequired}
+            </div>
           </div>
           <div className="flex flex-col">
             <div className="pb-1 font-orbitron text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
               User Interaction
             </div>
-            <div className="font-roboto text-violet-100">{cve.CVSSV3?.userInteraction}</div>
+            <div className="font-roboto text-violet-100">
+              {cve.CVSSV3?.userInteraction}
+            </div>
           </div>
         </div>
         <div className="mt-4 font-orbitron text-2xs font-bold uppercase tracking-wider text-violet-100">
@@ -102,7 +106,20 @@ const threatSummary = (cve: Cve) => {
   }
   // * CVSS Factors -> Read from vector string
   console.log(cve.CVSSV3.vectorString);
+
+
+const AV = "";
+const AC = "";
+const PR = "";
+const UI = "";
+const S = "";
+const C = "";
+const I = "";
+const A = ""; 
+
+
   // Parse vector string
+  if (cve.CVSSV3) {
     const vector = cve.CVSSV3.vectorString.split("/");
     const AV = vector[0].split(":")[1];
     const AC = vector[1].split(":")[1];
@@ -112,39 +129,48 @@ const threatSummary = (cve: Cve) => {
     const C = vector[5].split(":")[1];
     const I = vector[6].split(":")[1];
     const A = vector[7].split(":")[1];
+  }
 
-    // * Attack Vector
-    if (AV === "N") {
-        summary.push(`This vulnerability is remotely exploitable. `);
-    } else if (AV === "A") {
-        summary.push(`This vulnerability is remotely exploitable from an adjacent network. `);
-    } else if (AV === "L") {
-        summary.push(`This vulnerability is locally exploitable. `);
-    } else if (AV === "P") {
-        summary.push(`This vulnerability is only exploitable by a physical attacker. `);
-    }
-    // * Attack Complexity
-    if (AC === "L") {
-        summary.push(`This vulnerability is trivial for an attacker to exploit. `);
-    } else if (AC === "H") {
-        summary.push(`Exploitation of this vulnerability may prove challenging. `);
-    }
-    // * Privileges Required
-    if (PR === "N") {
-        summary.push(`This vulnerability does not require any special privileges to exploit. `);
-    } else if (PR === "L") {
-        summary.push(`Only low level access is required. `);
-    } else if (PR === "H") {
-        summary.push(`An elevated level of access is required to exploit this issue. `);
-    }
-    // * User Interaction
-    if (UI === "N") {
-        summary.push(`No user interaction is necessary. `);
-    } else if (UI === "R") {
-        summary.push(`A user must interact with the system to trigger the exploit payload. `);
-    }
+  // * Attack Vector
+  if (AV === "N") {
+    summary.push(`This vulnerability is remotely exploitable. `);
+  } else if (AV === "A") {
+    summary.push(
+      `This vulnerability is remotely exploitable from an adjacent network. `
+    );
+  } else if (AV === "L") {
+    summary.push(`This vulnerability is locally exploitable. `);
+  } else if (AV === "P") {
+    summary.push(
+      `This vulnerability is only exploitable by a physical attacker. `
+    );
+  }
+  // * Attack Complexity
+  if (AC === "L") {
+    summary.push(`This vulnerability is trivial for an attacker to exploit. `);
+  } else if (AC === "H") {
+    summary.push(`Exploitation of this vulnerability may prove challenging. `);
+  }
+  // * Privileges Required
+  if (PR === "N") {
+    summary.push(
+      `This vulnerability does not require any special privileges to exploit. `
+    );
+  } else if (PR === "L") {
+    summary.push(`Only low level access is required. `);
+  } else if (PR === "H") {
+    summary.push(
+      `An elevated level of access is required to exploit this issue. `
+    );
+  }
+  // * User Interaction
+  if (UI === "N") {
+    summary.push(`No user interaction is necessary. `);
+  } else if (UI === "R") {
+    summary.push(
+      `A user must interact with the system to trigger the exploit payload. `
+    );
+  }
 
   return summary;
 };
-
-
