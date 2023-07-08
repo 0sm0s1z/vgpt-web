@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
-import { MayHaveLabel, PieTooltipProps } from "@nivo/pie";
+import type { MayHaveLabel, PieTooltipProps } from "@nivo/pie";
 
 const ResponsivePie = dynamic(
   () => import("@nivo/pie").then((m) => m.ResponsivePie),

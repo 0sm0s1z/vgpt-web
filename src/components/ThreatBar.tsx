@@ -107,28 +107,15 @@ const threatSummary = (cve: Cve) => {
   // * CVSS Factors -> Read from vector string
   console.log(cve.CVSSV3.vectorString);
 
-
-const AV = "";
-const AC = "";
-const PR = "";
-const UI = "";
-const S = "";
-const C = "";
-const I = "";
-const A = ""; 
-
-
   // Parse vector string
+  let AV, AC, PR, UI;
+
   if (cve.CVSSV3) {
     const vector = cve.CVSSV3.vectorString.split("/");
-    const AV = vector[0].split(":")[1];
-    const AC = vector[1].split(":")[1];
-    const PR = vector[2].split(":")[1];
-    const UI = vector[3].split(":")[1];
-    const S = vector[4].split(":")[1];
-    const C = vector[5].split(":")[1];
-    const I = vector[6].split(":")[1];
-    const A = vector[7].split(":")[1];
+    AV = vector[0]?.split(":")[1];
+    AC = vector[1]?.split(":")[1];
+    PR = vector[2]?.split(":")[1];
+    UI = vector[3]?.split(":")[1];
   }
 
   // * Attack Vector
