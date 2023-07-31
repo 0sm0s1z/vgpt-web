@@ -16,7 +16,7 @@ export const LongDescription = ({ cve }: LongDescriptionProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Accordion type="single" collapsible className="w-full">
+    <Accordion type="single" collapsible className="w-full text-xl">
       <AccordionItem value="item-1">
         <AccordionTrigger className="w-full" onClick={() => setIsOpen(!isOpen)}>
           <div className="flex items-center rounded-md border border-violet-200/60 bg-black/30 p-2 shadow-lg">

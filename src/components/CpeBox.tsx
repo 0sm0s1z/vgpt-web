@@ -3,9 +3,10 @@ import type { Cve } from "~/pages/report";
 
 interface CpeBoxProps {
   cve: Cve;
+  mobile: boolean;
 }
 
-export const CpeBox = ({ cve }: CpeBoxProps) => {
+export const CpeBox = ({ cve, mobile }: CpeBoxProps) => {
   // Pull out the vendor, product, and version from the CPE string array
   const cpe = cve.CPE;
   let Vendor = "";
@@ -44,10 +45,9 @@ export const CpeBox = ({ cve }: CpeBoxProps) => {
       break;
     }
   }
-
   return (
     <div className="pl-2 font-orbitron">
-      <div className="mb-3 flex flex-row gap-4">
+      <div className="mb-3 flex flex-col md:flex-row gap-4">
         <div className="flex flex-col">
           <div className="text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
             Vendor
@@ -58,7 +58,9 @@ export const CpeBox = ({ cve }: CpeBoxProps) => {
           <div className="text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
             Product
           </div>
-          <div className="flex">{Product}</div>
+          <div className="flex">
+            <div className="overflow-ellipsis whitespace-nowrap">{Product}</div>
+          </div>
         </div>
         <div className="flex flex-col">
           <div className="text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
@@ -68,34 +70,73 @@ export const CpeBox = ({ cve }: CpeBoxProps) => {
         </div>
       </div>
 
-      <div className="flex flex-col">
-        <div className="mb-1">
-          <div className="text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
-            CPE 2.3 URI
-          </div>
-          <Link
-            href={`https://nvd.nist.gov/products/cpe/detail/0B36C194-E2F9-47C8-8063-74F27D3789B3?namingFormat=2.3&orderBy=CPEURI&keyword=${cpeUri}&status=FINAL&startIndex=0&resultsPerPage=20`}
-          >
-            <div className="font-mono text-xs hover:text-violet-600">
-              {cpeUri}
+      {mobile ? (
+        <div className="flex flex-col">
+          <div className="mb-1">
+            <div className="text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
+              CPE 2.3 URI
             </div>
-          </Link>
-        </div>
-        <hr className="mb-2 border-dotted border-violet-200/60" />
-        <div className="mb-1 flex flex-col">
-          <div className="text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
-            CVSS Vector
+            <Link
+              href={`https://nvd.nist.gov/products/cpe/detail/0B36C194-E2F9-47C8-8063-74F27D3789B3?namingFormat=2.3&orderBy=CPEURI&keyword=${cpeUri}&status=FINAL&startIndex=0&resultsPerPage=20`}
+            >
+              <div className="overflow-ellipsis whitespace-nowrap font-mono text-xs hover:text-violet-600 truncate">
+                {cpeUri}
+              </div>
+            </Link>
           </div>
-          <Link
-            href={`https://www.first.org/cvss/calculator/3.0#${cve.CVSSV3.vectorString}`}
-          >
-            <div className="font-mono text-xs hover:text-violet-600">
-              {cve.CVSSV3.vectorString}
+          <hr className="mb-2 border-dotted border-violet-200/60" />
+          <div className="mb-1">
+            <div className="text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
+              CVSS Vector
             </div>
-          </Link>
+            <div className="overflow-hidden">
+              <div className="overflow-ellipsis whitespace-nowrap">
+                <Link
+                  href={`https://www.first.org/cvss/calculator/3.0#${cve.CVSSV3.vectorString}`}
+                >
+                  <div className="font-mono text-xs hover:text-violet-600 truncate">
+                    {cve.CVSSV3.vectorString}
+                  </div>
+                </Link>
+              </div>
+            </div>
+          </div>
+          <hr className="mb-2 border-dotted border-violet-200/60" />
         </div>
-        <hr className="mb-2 border-dotted border-violet-200/60" />
-      </div>
+      ) : (
+        <div className="flex flex-col">
+          <div className="mb-1">
+            <div className="text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
+              CPE 2.3 URI
+            </div>
+            <Link
+              href={`https://nvd.nist.gov/products/cpe/detail/0B36C194-E2F9-47C8-8063-74F27D3789B3?namingFormat=2.3&orderBy=CPEURI&keyword=${cpeUri}&status=FINAL&startIndex=0&resultsPerPage=20`}
+            >
+              <div className="overflow-ellipsis whitespace-nowrap font-mono text-xs hover:text-violet-600">
+                {cpeUri}
+              </div>
+            </Link>
+          </div>
+          <hr className="mb-2 border-dotted border-violet-200/60" />
+          <div className="mb-1">
+            <div className="text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
+              CVSS Vector
+            </div>
+            <div className="overflow-hidden">
+              <div className="overflow-ellipsis whitespace-nowrap">
+                <Link
+                  href={`https://www.first.org/cvss/calculator/3.0#${cve.CVSSV3.vectorString}`}
+                >
+                  <div className="font-mono text-xs hover:text-violet-600">
+                    {cve.CVSSV3.vectorString}
+                  </div>
+                </Link>
+              </div>
+            </div>
+          </div>
+          <hr className="mb-2 border-dotted border-violet-200/60" />
+        </div>
+      )}
     </div>
   );
 };

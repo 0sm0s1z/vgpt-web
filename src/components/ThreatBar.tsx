@@ -1,4 +1,4 @@
-import { Cve } from "~/pages/report";
+import { type Cve } from "~/pages/report";
 
 interface ThreatBarProps {
   cve: Cve;
@@ -7,8 +7,8 @@ interface ThreatBarProps {
 export const ThreatBar = ({ cve }: ThreatBarProps) => {
   const summary = threatSummary(cve);
   return (
-    <div className="mt-4 flex w-full flex-row gap-6 rounded-md border border-violet-200/60 bg-white/10 p-8 shadow-lg">
-      <div className="flex flex-row">
+    <div className="mt-4 flex w-full flex-row rounded-md border border-violet-200/60 bg-white/10 shadow-lg">
+      <div className="flex flex-row p-4">
         <div className="flex flex-col">
           <div className="w-20 pb-1 font-orbitron text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
             Badges
@@ -18,8 +18,8 @@ export const ThreatBar = ({ cve }: ThreatBarProps) => {
           </div>
         </div>
       </div>
-      <div className="flex w-full flex-col">
-        <div className="flex w-full flex-row items-center justify-between px-2 font-roboto">
+      <div className="flex w-full flex-col p-4">
+        <div className="flex w-full flex-col justify-between  font-roboto md:flex-row">
           <div className="flex flex-col">
             <div className="pb-1 font-orbitron text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
               Attack Vector
@@ -54,8 +54,8 @@ export const ThreatBar = ({ cve }: ThreatBarProps) => {
           </div>
         </div>
         <div className="mt-4 font-orbitron text-2xs font-bold uppercase tracking-wider text-violet-100">
-          <div className="flex flex-row items-center">
-            <div className="flex flex-col ">
+          <div className="md:flex md:flex-row items-center">
+            <div className="">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

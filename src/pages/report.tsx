@@ -8,6 +8,8 @@ import { ThreatBar } from "~/components/ThreatBar";
 import { ThreatReport } from "~/components/ThreatReport";
 import { Remediation } from "~/components/Remediation";
 import { References } from "~/components/References";
+import { useEffect, useState } from "react";
+import { ChatBar } from "~/components/ChatBar";
 
 export interface Cve {
   CVEDataFormat: string;
@@ -79,10 +81,38 @@ export interface DescriptionDatum {
 }
 
 export default function Report() {
+  const [isMobile, setIsMobile] = useState(false);
   const loading = false;
+  if (typeof window !== "undefined") {
+    localStorage.setItem("description", data[0].Analysis.short_description);
+  }
+  
+
+  useEffect(() => {
+    // Check if window is defined (it won't be in server-side rendering)
+    if (typeof window !== "undefined") {
+      // Initial value, is it mobile or not?
+      setIsMobile(window.innerWidth < 768);
+
+      // Add resize listener
+      const handleResize = () => {
+        setIsMobile(window.innerWidth < 768);
+      };
+
+      window.addEventListener("resize", handleResize);
+
+      // Clean up the event listener on component unmount
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    }
+  }, []);
 
   return (
-    <div className="circuit-board container flex flex-col p-8">
+    <div
+      className="circuit-board container flex flex-col p-4 sm:p-2"
+      style={{ maxWidth: "1000px", margin: "0 auto" }}
+    >
       {loading ? (
         <div className="flex min-h-screen items-center justify-center">
           <h1>
@@ -90,38 +120,30 @@ export default function Report() {
           </h1>
         </div>
       ) : (
-        <div className="flex h-full flex-col gap-2 rounded-xl bg-white/10 p-4 text-white">
+        <div className="flex h-full gap-2 rounded-xl bg-white/10 p-2 text-white">
           <div className="flex-grow overflow-auto">
             {data.map((cve, index) => (
-              <div key={index} className="mb-4 mt-4 w-full rounded-md p-4">
-                <div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    className="absolute top-9 h-10 text-violet-100 hover:text-violet-400"
-                  >
-                    <line x1="19" y1="12" x2="5" y2="12"></line>
-                    <polyline points="12 19 5 12 12 5"></polyline>
-                  </svg>
-                </div>
-                <h3 className="pb-4 font-orbitron text-2xl font-bold">
+              <div key={index} className="mb-2 mt-2 w-full rounded-md p-2">
+                <h3 className="pb-2 font-orbitron text-xl font-bold sm:text-lg">
                   {cve.CVEDataMeta.ID} - {cve.Analysis.short_title}
                 </h3>
-                <div className="mb-4 flex w-full flex-row gap-6 rounded-md border border-violet-200/60 bg-white/10 p-4 shadow-lg">
-                  <div className="mr-10">
+                <div className="mb-2 rounded-md border border-violet-200/60 bg-white/10 p-2 shadow-lg md:flex md:flex-row">
+                  <div className="h-48 w-72 md:flex md:flex-row">
                     <SeverityGage />
                   </div>
-                  <CvssBox score={cve.CVSSV3.baseScore} />
-                  <CpeBox cve={cve} />
+                  <div className="px-2 font-roboto md:mt-6 md:flex md:flex-row md:gap-4">
+                    <CvssBox score={cve.CVSSV3.baseScore} />
+                    {isMobile ? (
+                      <CpeBox cve={cve} mobile={true} />
+                    ) : (
+                      <CpeBox cve={cve} mobile={false} />
+                    )}
+                  </div>
                 </div>
-                <div className="mb-2 flex flex-row justify-between gap-6">
+
+                <div className="mb-2 flex flex-col justify-between gap-4 text-xl sm:flex-col">
                   <div className="flex flex-col">
-                    <div className="pb-1 font-orbitron text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
+                    <div className="pb-1 font-orbitron text-xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
                       Short Description
                     </div>
                     <div className="font-roboto">
@@ -138,13 +160,13 @@ export default function Report() {
                 <ThreatReport cve={cve} />
                 <Remediation cve={cve} />
                 <References cve={cve} />
-
-                <hr className="mt-10"></hr>
+                <hr className="mt-4 sm:mt-2"></hr>
               </div>
             ))}
           </div>
         </div>
       )}
+      <ChatBar onSend={(message: string) => console.log(message)} />
     </div>
   );
 }

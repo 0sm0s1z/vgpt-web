@@ -17,16 +17,16 @@ export const CvssBox = ({ score }: CvssBoxProps) => {
   });
 
   return (
-    <div className="flex flex-col font-orbitron">
-      <div className="pb-2 text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
+    <div className="flex flex-row md:flex-col font-orbitron">
+      <div className="mb-16 md:mb-0 flex flex-row pb-2 text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
         CVSS BASE SCORE
       </div>
-      <div className="absolute m-1 mt-2 font-orbitron  text-6xl">
+      <div className="absolute m-1 mt-2 flex flex-row font-orbitron text-6xl">
         <animated.div className="p-1 font-orbitron text-6xl">
           {props.number.interpolate((n) => n.toFixed(1))}
         </animated.div>
       </div>
-      <div className="mt-16 flex flex-row">
+      <div className="ml-6 flex md:ml-0 md:mt-16 mb-4">
         <div className="flex flex-col">
           <div className="justify-center bg-red-600 pl-2 text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
             HIGH

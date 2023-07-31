@@ -44,11 +44,8 @@
     @apply border-border;
   }
   body {
-    @apply flex;
     @apply min-h-screen;
-    @apply flex-col;
     @apply items-center;
-    @apply justify-center;
     @apply bg-gradient-to-b;
     @apply from-[#291d64] to-[#0c0c1d];
   }

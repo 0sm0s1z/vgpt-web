@@ -20,7 +20,7 @@ export const ThreatReport = ({ cve }: LongDescriptionProps) => {
       defaultValue="item-1"
       type="single"
       collapsible
-      className="mt-4 w-full"
+      className="mt-4 w-full text-xl"
     >
       <AccordionItem value="item-1">
         <AccordionTrigger className="w-full" onClick={() => setIsOpen(!isOpen)}>

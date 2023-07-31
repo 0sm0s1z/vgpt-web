@@ -114,14 +114,17 @@ export const SeverityGage = () => {
   ];
 
   return (
-    <div className="flex w-44 flex-row">
+    <div className="flex flex-row">
       <div className="relative flex flex-col">
         <div className="pb-2 font-orbitron text-2xs font-bold uppercase tracking-wider text-violet-100 text-opacity-70">
           Vulnerability Severity
         </div>
-        <div className="absolute mt-6 h-56 w-56" ref={chartContainerRef}>
+        <div
+          className="absolute mt-6 h-72 w-72 pl-4 md:pl-0"
+          ref={chartContainerRef}
+        >
           <div
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform pb-10 text-center font-orbitron font-bold text-red-500"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform pb-10 pl-4 text-center font-orbitron font-bold text-red-500 md:pl-0"
             style={{ fontSize: `${labelSize}px`, color: `${labelColor}` }}
           >
             {label}
@@ -130,7 +133,7 @@ export const SeverityGage = () => {
           <ResponsivePie
             key={animateGauge}
             data={severityData}
-            margin={{ right: 10, left: 10 }}
+            margin={{ top: 0, right: 0, bottom: 0, left: 10 }}
             fit={false}
             startAngle={animateGauge}
             endAngle={-90}
