@@ -84,9 +84,13 @@ export default function Report() {
   const [isMobile, setIsMobile] = useState(false);
   const loading = false;
   if (typeof window !== "undefined") {
-    localStorage.setItem("description", data[0].Analysis.short_description);
+    if (data && data.length > 0) {
+      localStorage.setItem(
+        "description",
+        data[0]?.Analysis?.short_description || ""
+      );
+    }
   }
-  
 
   useEffect(() => {
     // Check if window is defined (it won't be in server-side rendering)

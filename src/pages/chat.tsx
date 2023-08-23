@@ -11,6 +11,9 @@ interface Message {
   text: string;
   timestamp: string;
 }
+interface ChatResponse {
+  message?: string; // Assuming that the response has a message property
+}
 
 export default function Chat() {
   const [isMobile, setIsMobile] = useState(false);
@@ -21,7 +24,7 @@ export default function Chat() {
   useEffect(() => {
     if (hasMounted) {
       if (typeof window !== "undefined") {
-        const storedMessage = localStorage.getItem("description");
+        const storedMessage = localStorage.getItem("description") || ""; // provide a default value
         const sender = "VulnerabilityGPT";
         const text =
           "**Welcome to VulnerabilityGPT! I'll use the information below as context for our conversation. Ask me anything about vulnerabilities!!**\n\n" +
@@ -37,9 +40,10 @@ export default function Chat() {
 
   // Scroll to the last message every time messages are updated
   useEffect(() => {
+    /*
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
+    }*/
   }, [messages]);
 
   useEffect(() => {
@@ -64,9 +68,9 @@ export default function Chat() {
   }, []);
 
   const handleSend = async (text: string) => {
-    let sender = "You";
-    let timestamp = new Date().toLocaleString();
-    let message = { sender, text, timestamp };
+    const sender = "You";
+    const timestamp = new Date().toLocaleString();
+    const message = { sender, text, timestamp };
     setMessages((oldMessages) => [...oldMessages, message]);
 
     // Format messages for OpenAI API
@@ -92,13 +96,14 @@ export default function Chat() {
       return;
     }
 
-    const data = await response.json(); // this is the correct place to process the response
+    const data = (await response.json()) as ChatResponse; // Assuming ChatResponse is defined
 
     const senderAI = "VulnerabilityGPT";
     const timestampAI = new Date().toLocaleString();
+
     const messageAI: Message = {
       sender: senderAI,
-      text: data.message, // make sure it's 'text' not 'message'
+      text: data?.message ?? "",
       timestamp: timestampAI,
     };
 
@@ -167,7 +172,11 @@ export default function Chat() {
       ))}
 
       <div ref={messagesEndRef} />
-      <ChatBar onSend={handleSend} />
+      <ChatBar
+        onSend={(text) => {
+          void handleSend(text);
+        }}
+      />
     </div>
   );
 }

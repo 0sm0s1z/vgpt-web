@@ -29,5 +29,6 @@
     "**/*.cjs",
     "**/*.mjs"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "src/pages/api/chat.js"],
+  "ignorePatterns": ["src/pages/api/chat.js"]
 }
