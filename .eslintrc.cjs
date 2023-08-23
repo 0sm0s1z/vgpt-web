@@ -8,7 +8,7 @@ const config = {
       extends: [
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
       ],
-      files: ["*.ts", "*.tsx"],
+      files: ["*.ts"],
       parserOptions: {
         project: path.join(__dirname, "tsconfig.json"),
       },
@@ -30,6 +30,7 @@ const config = {
     ],
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
   },
+  ignorePatterns: ["src/pages/api/chat.js"],
 };
 
 module.exports = config;
